@@ -8,14 +8,19 @@ const Login = () => {
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const {isFetching,error} = useSelector(state=>state.user);
+    const {isFetching} = useSelector(state=>state.user);
+    const [error, setError] = useState();
 
     const dispatch = useDispatch();
 
 
     const handleLogin=async(e)=>{
+        setError(null);
         e.preventDefault();
-        login(dispatch, {email,password})
+        const res= await login(dispatch, {email,password})
+        if(res.error){
+            setError(res.error.response.data)
+        }
     }
 
   return (
@@ -45,7 +50,7 @@ const Login = () => {
                     </button>
                     {
                         error &&
-                        <span className='form-error'>Something went wrong. Try again</span>
+                        <span className='form-error'>{error}</span>
                     }
                     <span>Forgot password?</span>
                     <p className='register-login'>

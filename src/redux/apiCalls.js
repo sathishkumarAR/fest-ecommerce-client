@@ -15,9 +15,11 @@ const login=async(dispatch,user)=>{
         const res = await axios.post("/api/auth/login", user)
 
         dispatch(loginSuccess(res.data))
+        return res.data;
 
     } catch (error) {
         dispatch(loginFailure())
+        return {error}
     }
 }
 
