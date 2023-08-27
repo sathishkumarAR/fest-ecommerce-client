@@ -2,13 +2,15 @@ import axios from "axios"
 import { loginFailure, loginStart, loginSuccess } from "./userSlice"
 
 
+axios.defaults.baseURL=(process.env.NODE_ENV ==="production")?"https://fest-server.onrender.com":"http://localhost:5000"
+
 const getToken=()=>{
     const token= JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.token
     return token;
 }
 
 const login=async(dispatch,user)=>{
-
+    
     dispatch(loginStart())
 
     try {
@@ -34,6 +36,7 @@ const register= async(dispatch, user)=>{
 
     } catch (error) {
         dispatch(loginFailure());
+        return {error}
     }
 
 }
