@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { register } from '../redux/apiCalls';
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import {Link} from "react-router-dom"
 
 const Register = () => {
 
@@ -11,19 +12,33 @@ const Register = () => {
     const [password, setPassword]= useState();
     const [confirmPassword, setConfirmPassword]= useState();
     const dispatch= useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError]=useState();
 
-    const handleRegister=(e)=>{
+    const handleRegister=async(e)=>{
+        setError(null);
+        setIsLoading(true);
         e.preventDefault();
 
-        if(password===confirmPassword){
-            register(dispatch,{
+        if(!fullname || !email || !mobile || !password){
+            setError("Please enter all the fields");
+        }
+        else if(password!==confirmPassword){
+            setError("Passwords do not match")
+        }
+        else{
+            const res= await register(dispatch,{
                 fullname,
                 email,
                 mobile,
                 password
             })
-        }
+            console.log(res);
 
+            if(res.error)
+                setError(res.error.response.data)
+        }
+        setIsLoading(false)
     }
 
   return (
@@ -69,11 +84,18 @@ const Register = () => {
                     By creating an account, I consent to the processing of my personal
                     data in accordance with the <b>PRIVACY POLICY</b>
                     </p>
-                    <button className="register-btn" onClick={handleRegister}>
+                    <button className="register-btn" disabled={isLoading} onClick={handleRegister}>
                         REGISTER
                     </button>
+                    {
+                        error &&
+                        <span className='form-error'>{error}</span>
+                    }
                     <p className='register-login'>
-                        Already have an account? <span>Login</span>
+                        Already have an account? 
+                        <Link to="/login" className='link'>
+                            <span>Login</span>
+                        </Link>
                     </p>
                 </form>
             </div>

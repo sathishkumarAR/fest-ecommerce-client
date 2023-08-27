@@ -668,6 +668,7 @@ h1.logo{
     width: 100%;
 }
 .register-form span{
+    font-size: 15px;
     font-weight: 600;
     color: teal;
     cursor: pointer;

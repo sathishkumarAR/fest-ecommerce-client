@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/Navbar'
 import { login } from '../redux/apiCalls';
+import { Link } from "react-router-dom";
 
 const Login = () => {
 
@@ -54,7 +55,10 @@ const Login = () => {
                     }
                     <span>Forgot password?</span>
                     <p className='register-login'>
-                        New to Fest? <span>Create your account</span>
+                        New to Fest? 
+                        <Link to="/register" className='link'>
+                            <span>Create your account</span>
+                        </Link>
                     </p>
                 </form>
             </div>
